@@ -2,9 +2,12 @@ package client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,17 +21,33 @@ import sun.tools.jar.CommandLine;
 
 public class Client_login extends JFrame implements ActionListener{
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		
 		Client_login client_login=new Client_login();
 		Client client = new Client();
-	}
+	}*/
 
+	// GUI Resource
 	private JTextField ip_tf;
 	private JTextField port_tf;
 	private JTextField id_tf;
 	
 	JButton connect_btn= new JButton("Connect");
+	
+	//Socket Resource
+	DataOutputStream dos;
+	
+	public void sendMsg(String msg){
+		try {
+			
+			dos.writeUTF(msg+"\n");
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public Client_login() {
 		setTitle("Client_login");
@@ -94,12 +113,19 @@ public class Client_login extends JFrame implements ActionListener{
 
 				try {
 					Socket socket = new Socket(ip, port);
+					
+					//데이터 보낼때
 					OutputStream os = socket.getOutputStream();
-					DataOutputStream dos = new DataOutputStream(os);
+					dos = new DataOutputStream(os);
 					
-					dos.writeUTF("Client: "+id+" 연결 성공!");
+					dos.writeUTF("Client: "+id+" 연결 성공!\n");
 					
 					
+					// 데이터 받을때
+					InputStream is = socket.getInputStream();
+					DataInputStream dis = new DataInputStream(is);
+					
+										
 				} catch (IOException  e) {
 					e.printStackTrace();
 				} 
