@@ -36,10 +36,20 @@ public class Server extends JFrame implements ActionListener {
 	InputStream is;
 	OutputStream os;
 	DataInputStream dis ;
+	DataOutputStream dos ;
 
 	public void process() {
 		addAction();
 
+	}
+	
+	public void sendMsg(){
+		try {
+			dos.writeUTF(msg_tf.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// Add actionListener
@@ -52,6 +62,7 @@ public class Server extends JFrame implements ActionListener {
 	
 	public void openSocket(int portNum) {
 
+		
 		// thread Start
 		Thread th = new Thread(new Runnable() {
 			@Override
@@ -80,11 +91,11 @@ public class Server extends JFrame implements ActionListener {
 						window_ta.append(msg);
 
 						// 보낼때
-						/*os = socket.getOutputStream();
-						DataOutputStream dos = new DataOutputStream(os);
+						os = socket.getOutputStream();
+						dos = new DataOutputStream(os);
 
-						dos.writeUTF(msg_tf.getText());
-*/					
+//						dos.writeUTF(msg_tf.getText());
+						
 					}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -95,8 +106,9 @@ public class Server extends JFrame implements ActionListener {
 			}
 		});
 		// thread End
+		
 		th.start();
-
+		
 	}
 
 	public Server() {
@@ -142,7 +154,7 @@ public class Server extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == send_btn){
 			System.out.println("send btn");
-			
+			sendMsg();
 			
 		}else if(e.getSource() == start_btn){			
 			System.out.println("start btn");

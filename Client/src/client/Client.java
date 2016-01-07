@@ -15,12 +15,13 @@ import java.awt.event.ActionEvent;
 public class Client extends JFrame implements ActionListener{
 
 	
-	Client_login client_login=new Client_login();;
+	static Client_login client_login;
 	
 	public static void main(String[] args) {
 		
-		
 		Client client = new Client();
+		client_login=new Client_login(client);
+
 	}
 	
 	private JTextField msg_tf;

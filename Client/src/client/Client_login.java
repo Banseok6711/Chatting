@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import sun.tools.jar.CommandLine;
 
 public class Client_login extends JFrame implements ActionListener{
+	
+	Client client;
 
 	/*public static void main(String[] args) {
 		
@@ -36,6 +38,7 @@ public class Client_login extends JFrame implements ActionListener{
 	
 	//Socket Resource
 	DataOutputStream dos;
+	DataInputStream dis;
 	
 	public void sendMsg(String msg){
 		try {
@@ -49,7 +52,10 @@ public class Client_login extends JFrame implements ActionListener{
 		}
 	}
 
-	public Client_login() {
+	public Client_login(){}
+	public Client_login(Client c) {
+		client = c;
+		
 		setTitle("Client_login");
 		getContentPane().setLayout(null);
 
@@ -123,7 +129,16 @@ public class Client_login extends JFrame implements ActionListener{
 					
 					// 데이터 받을때
 					InputStream is = socket.getInputStream();
-					DataInputStream dis = new DataInputStream(is);
+					dis = new DataInputStream(is);
+					
+					while(true){
+						String msg = dis.readUTF();
+						client.chat_ta.append("Server:"+msg+"\n");
+						
+					}
+					
+					
+					
 					
 										
 				} catch (IOException  e) {
