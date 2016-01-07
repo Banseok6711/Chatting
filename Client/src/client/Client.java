@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Client extends JFrame implements ActionListener{
 
@@ -81,6 +82,7 @@ public class Client extends JFrame implements ActionListener{
 		send_btn.setBounds(406, 401, 68, 23);
 		getContentPane().add(send_btn);
 		
+				
 		setSize(502,498);
 		setVisible(true);	
 		

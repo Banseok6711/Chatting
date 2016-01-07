@@ -107,9 +107,9 @@ public class Client_login extends JFrame implements ActionListener{
 		
 	}
 	
-	private void openSocket(String ip , int port){
+	private void openSocket(final String ip , final int port){
 		
-		String id = id_tf.getText();
+		final String id = id_tf.getText();
 
 		Thread th = new Thread(new Runnable() {
 			

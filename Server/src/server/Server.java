@@ -60,8 +60,36 @@ public class Server extends JFrame implements ActionListener {
 
 	}
 	
-	public void openSocket(int portNum) {
+	
+	public void receiveMsg(){
+		Thread th2 = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while(true){
+					try {
+						String msg =dis.readUTF();
+						window_ta.append(msg);
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
+		
+		th2.start();
+		
+	}
+	
+	public void openServerSocket(final int portNum) {
 
+		
+		
+		
 		
 		// thread Start
 		Thread th = new Thread(new Runnable() {
@@ -70,39 +98,32 @@ public class Server extends JFrame implements ActionListener {
 				// TODO Auto-generated method stub
 				
 				try {
+					
+					
 					ServerSocket server = new ServerSocket(portNum);
 					window_ta.append("서버가 준비되었습니다...\n");
+					Socket socket;
 					
-					Socket socket = server.accept();
-					window_ta.append("client가 연결되었습니다.\n");
-
-					// Server입장에서 받을때
-					is = socket.getInputStream();
-					dis = new DataInputStream(is);
-
-
-					while (true) {
-					
-					    System.out.println("while문 실행됨");
+					while(true){
+						socket = server.accept();
+						window_ta.append("client가 연결되었습니다.\n");
 						
+						// Server입장에서 받을때
+						is = socket.getInputStream();
+						dis = new DataInputStream(is);
 						
-						// Client로 받은 메시지
-						String msg = dis.readUTF();
-						window_ta.append(msg);
-
-						// 보낼때
+						// Server 에서 보낼때
 						os = socket.getOutputStream();
 						dos = new DataOutputStream(os);
 
-//						dos.writeUTF(msg_tf.getText());
-						
+						receiveMsg();
+					
 					}
+					
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				
-
 			}
 		});
 		// thread End
@@ -141,9 +162,7 @@ public class Server extends JFrame implements ActionListener {
 		send_btn.setBounds(209, 246, 69, 23);
 		getContentPane().add(send_btn);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(38, 64, 2, 2);
-		getContentPane().add(scrollPane);
+		
 		setSize(310, 459);
 		setVisible(true);
 
@@ -160,8 +179,7 @@ public class Server extends JFrame implements ActionListener {
 			System.out.println("start btn");
 			
 			int portNum =Integer.parseInt(port_tf.getText());
-			openSocket(portNum);
-			
+			openServerSocket(portNum);
 			
 			
 		}else if(e.getSource() == stop_btn){
