@@ -6,60 +6,148 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
-public class Server extends JFrame {
+public class Server extends JFrame implements ActionListener{
 	
 	public static void main(String[] args){
 		Server server = new Server();
+		
 	}
 	
-	private JTextField textField;
-	private JTextField textField_1;
+	//JFrame Resource
+	private JTextField port_tf;
+	private JTextField msg_tf;
+	
+	JButton start_btn = new JButton("Start");
+	JButton stop_btn = new JButton("Stop");
+	JButton send_btn = new JButton("send");
+	JTextArea window_ta = new JTextArea();
+	
+	//Socket Resource
+	InputStream is ;
+	OutputStream os;
+	
+	
+	
+	public void process(){
+		addAction();
+		
+		
+	}
+	
+	//Add actionListener 
+	public void addAction(){
+		start_btn.addActionListener(this);
+		stop_btn.addActionListener(this);
+		send_btn.addActionListener(this);
+				
+	}
+	
+	public void openSocket(int portNum){
+		
+		
+		//thread Start
+		Thread th = new Thread(new Runnable() {			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {			
+					
+					ServerSocket server = new ServerSocket(portNum);			
+					window_ta.append("ÏÑúÎ≤ÑÍ∞Ä Ï§ÄÎπÑÎêòÏóàÏäµÎãàÎã§...\n");
+					 Socket socket = server.accept();
+					 window_ta.append("clientÍ∞Ä Ïó∞Í≤∞ÎêòÏóàÏäµÎãàÎã§.\n");
+			
+					 is = socket.getInputStream();
+					 DataInputStream dis = new DataInputStream(is);
+					 
+					 //ClientÎ°ú Î∞õÏùÄ Î©îÏãúÏßÄ
+					 String msg = dis.readUTF();
+					 window_ta.append(msg);
+					 
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+							
+			}
+		});
+		// thread End
+		th.start();
+				
+	}
+	
+	
+	
 	
 	
 	public Server() {
+		setTitle("Server");
 		getContentPane().setLayout(null);
 		
 		JLabel lblPort = new JLabel("Port");
-		lblPort.setBounds(47, 236, 57, 15);
+		lblPort.setBounds(59, 300, 57, 15);
 		getContentPane().add(lblPort);
 		
-		textField = new JTextField();
-		textField.setBounds(115, 233, 116, 21);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		port_tf = new JTextField();
+		port_tf.setBounds(127, 297, 116, 21);
+		getContentPane().add(port_tf);
+		port_tf.setColumns(10);
 		
-		JButton btnNewButton = new JButton("º≠πˆ Ω««‡");
-		btnNewButton.setBounds(27, 278, 97, 23);
-		getContentPane().add(btnNewButton);
+	
+		start_btn.setBounds(39, 342, 97, 23);
+		getContentPane().add(start_btn);
 		
-		JButton btnNewButton_1 = new JButton("º≠πˆ ¡ﬂ¡ˆ");
-		btnNewButton_1.setBounds(134, 278, 97, 23);
-		getContentPane().add(btnNewButton_1);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(12, 10, 250, 144);
-		getContentPane().add(textArea);
+		stop_btn.setBounds(146, 342, 97, 23);
+		getContentPane().add(stop_btn);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(7, 168, 171, 21);
-		getContentPane().add(textField_1);
-		textField_1.setColumns(10);
 		
-		JButton btnNewButton_2 = new JButton("send");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_2.setBounds(193, 167, 69, 23);
-		getContentPane().add(btnNewButton_2);
+		window_ta.setBounds(12, 10, 266, 224);
+		getContentPane().add(window_ta);
+		
+		msg_tf = new JTextField();
+		msg_tf.setBounds(12, 246, 183, 21);
+		getContentPane().add(msg_tf);
+		msg_tf.setColumns(10);		
+		
+		send_btn.setBounds(209, 246, 69, 23);
+		getContentPane().add(send_btn);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(38, 64, 2, 2);
 		getContentPane().add(scrollPane);
-		setSize(290,371);
+		setSize(310,459);
 		setVisible(true);
+		
+		process(); // program process
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == send_btn){
+			System.out.println("send btn");
+			
+		}else if(e.getSource() == start_btn){			
+			System.out.println("start btn");
+			
+			int portNum =Integer.parseInt(port_tf.getText());
+			openSocket(portNum);
+			
+			
+			
+		}else if(e.getSource() == stop_btn){
+			System.out.println("stop btn");
+		}
+		
 	}
 }

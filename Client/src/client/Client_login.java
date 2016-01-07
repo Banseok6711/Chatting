@@ -1,5 +1,14 @@
 package client;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -7,7 +16,7 @@ import javax.swing.JTextField;
 
 import sun.tools.jar.CommandLine;
 
-public class Client_login extends JFrame {
+public class Client_login extends JFrame implements ActionListener{
 
 	public static void main(String[] args) {
 		
@@ -15,11 +24,14 @@ public class Client_login extends JFrame {
 		Client client = new Client();
 	}
 
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField ip_tf;
+	private JTextField port_tf;
+	private JTextField id_tf;
+	
+	JButton connect_btn= new JButton("Connect");
 
 	public Client_login() {
+		setTitle("Client_login");
 		getContentPane().setLayout(null);
 
 		JLabel lblIp = new JLabel("IP");
@@ -34,27 +46,86 @@ public class Client_login extends JFrame {
 		lblId.setBounds(57, 213, 57, 15);
 		getContentPane().add(lblId);
 
-		textField = new JTextField();
-		textField.setBounds(110, 127, 116, 21);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		ip_tf = new JTextField();
+		ip_tf.setBounds(110, 127, 116, 21);
+		getContentPane().add(ip_tf);
+		ip_tf.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(110, 166, 116, 21);
-		getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		port_tf = new JTextField();
+		port_tf.setBounds(110, 166, 116, 21);
+		getContentPane().add(port_tf);
+		port_tf.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(110, 210, 116, 21);
-		getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		id_tf = new JTextField();
+		id_tf.setBounds(110, 210, 116, 21);
+		getContentPane().add(id_tf);
+		id_tf.setColumns(10);
 
-		JButton btnNewButton = new JButton("Connect");
-		btnNewButton.setBounds(94, 267, 97, 23);
-		getContentPane().add(btnNewButton);
+		
+		connect_btn.setBounds(94, 267, 97, 23);
+		getContentPane().add(connect_btn);
 
-		setSize(305, 402);
+		setSize(319, 423);
 		setVisible(true);
+		
+		startProcess();
+		
+	}
+	
+	public void settingListener(){
+		connect_btn.addActionListener(this);
+	}
+
+	private void startProcess() {
+		settingListener();
+		
+		
+	}
+	
+	private void openSocket(String ip , int port){
+		
+		String id = id_tf.getText();
+
+		Thread th = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+
+				try {
+					Socket socket = new Socket(ip, port);
+					OutputStream os = socket.getOutputStream();
+					DataOutputStream dos = new DataOutputStream(os);
+					
+					dos.writeUTF("Client: "+id+" 연결 성공!");
+					
+					
+				} catch (IOException  e) {
+					e.printStackTrace();
+				} 
+
+				
+			}
+		});
+		// Thread End
+		
+		th.start();
+				
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == connect_btn){
+			System.out.println("connect btn ");
+			
+			String ip = ip_tf.getText();
+			int port = Integer.parseInt(port_tf.getText());
+			
+			openSocket(ip , port);
+			
+		}
+		
 	}
 
 }

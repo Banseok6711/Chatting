@@ -14,13 +14,14 @@ public class Client extends JFrame {
 		
 		
 	public Client() {
+		setTitle("Client");
 		getContentPane().setLayout(null);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(154, 10, 320, 381);
 		getContentPane().add(textArea);
 		
-		JButton btnNewButton = new JButton("쪽지보내기");
+		JButton btnNewButton = new JButton("send Msg");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
