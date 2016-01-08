@@ -23,12 +23,6 @@ public class Client_login extends JFrame implements ActionListener{
 	
 	Client client;
 
-	/*public static void main(String[] args) {
-		
-		Client_login client_login=new Client_login();
-		Client client = new Client();
-	}*/
-
 	// GUI Resource
 	private JTextField ip_tf;
 	private JTextField port_tf;
@@ -52,7 +46,7 @@ public class Client_login extends JFrame implements ActionListener{
 		}
 	}
 
-	public Client_login(){}
+
 	public Client_login(Client c) {
 		client = c;
 		
@@ -93,12 +87,20 @@ public class Client_login extends JFrame implements ActionListener{
 		setSize(319, 423);
 		setVisible(true);
 		
+		
+		//윈도우창에서의 위치설정
+		setLocation(400, 50);
+		
 		startProcess();
 		
 	}
 	
 	public void settingListener(){
 		connect_btn.addActionListener(this);
+		
+		//테스트 편의를 위해서 임시 설정 
+		ip_tf.setText("127.0.0.1");
+		port_tf.setText("1111");
 	}
 
 	private void startProcess() {
@@ -124,23 +126,22 @@ public class Client_login extends JFrame implements ActionListener{
 					OutputStream os = socket.getOutputStream();
 					dos = new DataOutputStream(os);
 					
-					dos.writeUTF("Client: "+id+" 연결 성공!\n");
+					dos.writeUTF(id);
 					
 					
-					// 데이터 받을때
+//					 데이터 받을때 (일단 client는 보내는것만 처리 후에 나중에 하기)
+					
 					InputStream is = socket.getInputStream();
 					dis = new DataInputStream(is);
 					
 					while(true){
 						String msg = dis.readUTF();
+						System.out.println("Server로부터 받은메시지:"+msg);
 						client.chat_ta.append("Server:"+msg+"\n");
 						
-					}
+					}			
 					
 					
-					
-					
-										
 				} catch (IOException  e) {
 					e.printStackTrace();
 				} 

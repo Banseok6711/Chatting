@@ -38,14 +38,16 @@ public class Client extends JFrame implements ActionListener{
 		getContentPane().setLayout(null);
 		
 
-		chat_ta.setBounds(154, 10, 320, 381);
-		getContentPane().add(chat_ta);
+//		chat_ta.setBounds(154, 10, 320, 381);
+//		getContentPane().add(chat_ta);		
 		
-
-		shortMsg_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		//ScrollPane 추가 
+		JScrollPane sp = new JScrollPane();
+		sp.setBounds(154, 10, 320, 381);
+		sp.setViewportView(chat_ta);		
+		getContentPane().add(sp);
+		
+	
 		shortMsg_btn.setBounds(12, 172, 130, 23);
 		getContentPane().add(shortMsg_btn);
 		
@@ -82,9 +84,13 @@ public class Client extends JFrame implements ActionListener{
 		send_btn.setBounds(406, 401, 68, 23);
 		getContentPane().add(send_btn);
 		
+	
 				
 		setSize(502,498);
 		setVisible(true);	
+		
+		//윈도우창에서의 위치설정
+		setLocation(700, 50);
 		
 		setttingListener();		
 	}
