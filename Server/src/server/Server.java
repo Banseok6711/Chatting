@@ -60,21 +60,12 @@ public class Server extends JFrame implements ActionListener {
 				dos = new DataOutputStream(os);
 				
 				nickName =dis.readUTF();
-				window_ta.append("client :"+nickName+" 접속하였습니다..\n");
-				
-				
-			
-				
-				
-				
-			
+				window_ta.append("client :"+nickName+" 접속하였습니다..\n");			
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-
 		}
 		
 
@@ -86,11 +77,7 @@ public class Server extends JFrame implements ActionListener {
 				try {
 					String msg =dis.readUTF();
 					window_ta.append(nickName+":"+ msg);
-					
-					
-					
-				
-					
+										
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -193,11 +180,11 @@ public class Server extends JFrame implements ActionListener {
 						
 						//Thread에 추가해줬더니 NullPointerException 발생함 (여기에 지정해줘야함)
 						client_list.add(user);
-						
+							
 						
 						//접속자목록 Client에게 뿌려주기
 						for(int i = 0 ;i< client_list.size();i++){
-							System.out.println("clientSize:"+ client_list.size());
+//							System.out.println("clientSize:"+ client_list.size());
 							String nick = client_list.get(i).nickName;
 							String nickMessage = "UserList/"+nick;
 							
@@ -205,10 +192,15 @@ public class Server extends JFrame implements ActionListener {
 						}
 						
 						
+						//기존 접속자들에게 새로들어온 접속자를 알려줘야 한다. 
+						for(int i = 0 ;i< client_list.size()-1;i++){
+							String nickMessage ="NewList/"+user.nickName;
+							client_list.get(i).dos.writeUTF(nickMessage);
+						}
+						
+						
 						user.start();
-								
-												
-												
+										
 						
 					
 					}

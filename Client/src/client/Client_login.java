@@ -112,6 +112,8 @@ public class Client_login extends JFrame implements ActionListener{
 		
 	}
 	
+	
+	
 	private void openSocket(final String ip , final int port){
 		
 		final String id = id_tf.getText();
@@ -155,10 +157,9 @@ public class Client_login extends JFrame implements ActionListener{
 								
 						}else if(cate.equals("UserList")){
 							client.settingUserList(info);
+						}else if(cate.equals("NewList")){ // 새로 접속한 사람있을 때  message
+							client.settingUserList(info);
 						}
-						
-						
-						
 					}			
 					
 					
