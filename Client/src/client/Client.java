@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JList;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -25,14 +28,28 @@ public class Client extends JFrame implements ActionListener{
 
 	}
 	
+	public void settingUserList(String id){
+		System.out.println("settingUserList 실행");
+		
+		list_vector.add(id);
+		
+		userList.setListData(list_vector);
+	}
+	
+	
 	private JTextField msg_tf;
+	
+	JList userList;
+	JList roomList;
+	
 	JTextArea chat_ta = new JTextArea();
 	JButton shortMsg_btn = new JButton("ShortMsg");
 	JButton join_btn = new JButton("Room Join");
 	JButton create_btn = new JButton("Create Room");
 	JButton send_btn = new JButton("send");
 	
-	
+	Vector list_vector=new Vector(); 
+			
 	public Client() {
 		setTitle("Client");
 		getContentPane().setLayout(null);
@@ -55,9 +72,9 @@ public class Client extends JFrame implements ActionListener{
 		lblNewLabel.setBounds(12, 14, 130, 15);
 		getContentPane().add(lblNewLabel);
 		
-		JList list = new JList();
-		list.setBounds(12, 38, 130, 124);
-		getContentPane().add(list);
+		userList = new JList<JLabel>();
+		userList.setBounds(12, 38, 130, 124);
+		getContentPane().add(userList);
 		
 		msg_tf = new JTextField();
 		msg_tf.setBounds(154, 401, 246, 21);
@@ -68,9 +85,9 @@ public class Client extends JFrame implements ActionListener{
 		lblChattingRoom.setBounds(12, 205, 130, 15);
 		getContentPane().add(lblChattingRoom);
 		
-		JList list_1 = new JList();
-		list_1.setBounds(12, 230, 130, 124);
-		getContentPane().add(list_1);
+		roomList = new JList();
+		roomList.setBounds(12, 230, 130, 124);
+		getContentPane().add(roomList);
 		
 	
 		join_btn.setBounds(12, 367, 130, 23);
@@ -113,13 +130,14 @@ public class Client extends JFrame implements ActionListener{
 		}else if(e.getSource() == shortMsg_btn){
 			
 		}else if(e.getSource() == send_btn){
-			System.out.println("send btn");
-			
+			System.out.println("send btn");			
 
-			client_login.sendMsg(msg_tf.getText());
-					
-		}
-		
+			client_login.sendMsg(msg_tf.getText());					
+		}		
 		
 	}
+	
+	
+	
+	
 }

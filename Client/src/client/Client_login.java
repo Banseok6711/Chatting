@@ -11,13 +11,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.StringTokenizer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import sun.swing.StringUIClientPropertyKey;
 import sun.tools.jar.CommandLine;
+import sun.util.locale.StringTokenIterator;
 
 public class Client_login extends JFrame implements ActionListener{
 	
@@ -128,6 +131,11 @@ public class Client_login extends JFrame implements ActionListener{
 					
 					dos.writeUTF(id);
 					
+//					//접속자 리스트에 자기자신 먼저 추가(1명) 
+//					client.settingUserList(id);
+					
+					//이미 기존에 접속한 리스트를 추가
+									
 					
 //					 데이터 받을때 (일단 client는 보내는것만 처리 후에 나중에 하기)
 					
@@ -137,7 +145,19 @@ public class Client_login extends JFrame implements ActionListener{
 					while(true){
 						String msg = dis.readUTF();
 						System.out.println("Server로부터 받은메시지:"+msg);
-						client.chat_ta.append("Server:"+msg+"\n");
+						
+						StringTokenizer st = new StringTokenizer(msg, "/");
+						String cate=st.nextToken();
+						String info=st.nextToken();
+						
+						if(cate.equals("Chat")){
+							client.chat_ta.append(info+"\n");
+								
+						}else if(cate.equals("UserList")){
+							client.settingUserList(info);
+						}
+						
+						
 						
 					}			
 					

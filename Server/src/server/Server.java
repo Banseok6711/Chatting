@@ -61,6 +61,14 @@ public class Server extends JFrame implements ActionListener {
 				
 				nickName =dis.readUTF();
 				window_ta.append("client :"+nickName+" 접속하였습니다..\n");
+				
+				
+			
+				
+				
+				
+			
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -78,6 +86,10 @@ public class Server extends JFrame implements ActionListener {
 				try {
 					String msg =dis.readUTF();
 					window_ta.append(nickName+":"+ msg);
+					
+					
+					
+				
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -100,7 +112,8 @@ public class Server extends JFrame implements ActionListener {
 	
 	
 	//다중 클라이언트 집합
-	Vector client_list = new Vector();
+	Vector<UserInfo> client_list = new Vector<UserInfo>();
+	
 	
 	UserInfo user ;
 
@@ -116,7 +129,7 @@ public class Server extends JFrame implements ActionListener {
 			//모두에게 전송
 			System.out.println("client_size:"+client_list.size());
 			for(int i =0 ;i<client_list.size();i++){
-				((UserInfo)client_list.get(i)).dos.writeUTF("Server:"+msg_tf.getText());
+				client_list.get(i).dos.writeUTF("Chat/"+"Server:"+msg_tf.getText());
 				System.out.println("client_size:"+client_list.size());
 			}
 			
@@ -177,8 +190,26 @@ public class Server extends JFrame implements ActionListener {
 						//Client와 통신할 소켓들을 Vector에 저장하기 
 						user = new UserInfo(socket);
 						
-						user.start();
+						
+						//Thread에 추가해줬더니 NullPointerException 발생함 (여기에 지정해줘야함)
 						client_list.add(user);
+						
+						
+						//접속자목록 Client에게 뿌려주기
+						for(int i = 0 ;i< client_list.size();i++){
+							System.out.println("clientSize:"+ client_list.size());
+							String nick = client_list.get(i).nickName;
+							String nickMessage = "UserList/"+nick;
+							
+							user.dos.writeUTF(nickMessage);
+						}
+						
+						
+						user.start();
+								
+												
+												
+						
 					
 					}
 					
