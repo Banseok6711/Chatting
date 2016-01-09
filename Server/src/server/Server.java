@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -75,8 +76,30 @@ public class Server extends JFrame implements ActionListener {
 			
 			while(true){
 				try {
+					
 					String msg =dis.readUTF();
-					window_ta.append(nickName+":"+ msg);
+					StringTokenizer st = new StringTokenizer(msg, "/");
+					String protocol =st.nextToken();
+					String from = st.nextToken();
+					String to = st.nextToken();
+					String info = st.nextToken();
+					
+					if(protocol.equals("Note")){
+												
+						for(int i=0;i<client_list.size();i++){
+							//접속자 리스트중에서 쪽지대상의 객체일때 
+							if(client_list.get(i).nickName.equals(to)){
+								
+								client_list.get(i).dos.writeUTF(protocol+"/"+from+"/"+to+"/"+info);
+								
+							}
+						}
+						
+					}else if(protocol.equals("Chat")){
+						
+						window_ta.append(nickName+":"+ info);
+					}
+					
 										
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -116,8 +139,7 @@ public class Server extends JFrame implements ActionListener {
 			//모두에게 전송
 			System.out.println("client_size:"+client_list.size());
 			for(int i =0 ;i<client_list.size();i++){
-				client_list.get(i).dos.writeUTF("Chat/"+"Server:"+msg_tf.getText());
-				System.out.println("client_size:"+client_list.size());
+				client_list.get(i).dos.writeUTF("Chat/Server/Client/"+msg_tf.getText());
 			}
 			
 			
@@ -186,7 +208,7 @@ public class Server extends JFrame implements ActionListener {
 						for(int i = 0 ;i< client_list.size();i++){
 //							System.out.println("clientSize:"+ client_list.size());
 							String nick = client_list.get(i).nickName;
-							String nickMessage = "UserList/"+nick;
+							String nickMessage = "UserList/Server/Client/"+nick;
 							
 							user.dos.writeUTF(nickMessage);
 						}
@@ -194,7 +216,7 @@ public class Server extends JFrame implements ActionListener {
 						
 						//기존 접속자들에게 새로들어온 접속자를 알려줘야 한다. 
 						for(int i = 0 ;i< client_list.size()-1;i++){
-							String nickMessage ="NewList/"+user.nickName;
+							String nickMessage ="NewList/Server/Client/"+user.nickName;
 							client_list.get(i).dos.writeUTF(nickMessage);
 						}
 						

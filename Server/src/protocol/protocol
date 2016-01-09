@@ -1,2 +1,3 @@
 Chat/(message) : 채팅창에서의 대화 
 UserList/(message) : 접속자 정보 
+Note/(userid)/(note) : 쪽지보내기

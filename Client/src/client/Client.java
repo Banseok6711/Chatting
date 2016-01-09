@@ -3,13 +3,18 @@ package client;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import com.sun.corba.se.spi.orbutil.fsm.Action;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
@@ -124,18 +129,34 @@ public class Client extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == create_btn){
+		
+			
 			
 		}else if(e.getSource() == join_btn){
 			
 		}else if(e.getSource() == shortMsg_btn){
+			System.out.println("쪽지 보내기");
+		
+			String selectedList = userList.getSelectedValue().toString();
+			
+			JOptionPane jop = new JOptionPane();
+			 String msg = jop.showInputDialog(this, selectedList+" 님에게 보낼 내용 ");
+			 		
+			try {
+				client_login.dos.writeUTF("Note/"+client_login.id+"/"+selectedList+"/"+msg);
+				
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			
 		}else if(e.getSource() == send_btn){
 			System.out.println("send btn");			
 
-			client_login.sendMsg(msg_tf.getText());					
+			client_login.sendMsg("Chat/"+"Server/"+msg_tf.getText());					
 		}		
 		
 	}
+	
 	
 	
 	

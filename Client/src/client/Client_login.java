@@ -16,11 +16,16 @@ import java.util.StringTokenizer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import sun.swing.StringUIClientPropertyKey;
 import sun.tools.jar.CommandLine;
 import sun.util.locale.StringTokenIterator;
+import javax.swing.JTextPane;
+import javax.swing.JPanel;
+import javax.swing.JDesktopPane;
+import javax.swing.JScrollPane;
 
 public class Client_login extends JFrame implements ActionListener{
 	
@@ -31,6 +36,8 @@ public class Client_login extends JFrame implements ActionListener{
 	private JTextField port_tf;
 	private JTextField id_tf;
 	
+	
+	String id;
 	JButton connect_btn= new JButton("Connect");
 	
 	//Socket Resource
@@ -40,7 +47,7 @@ public class Client_login extends JFrame implements ActionListener{
 	public void sendMsg(String msg){
 		try {
 			
-			dos.writeUTF(msg+"\n");
+			dos.writeUTF("Chat/"+id_tf+"/Server/"+msg);
 			
 			
 		} catch (IOException e) {
@@ -116,7 +123,7 @@ public class Client_login extends JFrame implements ActionListener{
 	
 	private void openSocket(final String ip , final int port){
 		
-		final String id = id_tf.getText();
+		id = id_tf.getText();
 
 		Thread th = new Thread(new Runnable() {
 			
@@ -149,16 +156,28 @@ public class Client_login extends JFrame implements ActionListener{
 						System.out.println("Server로부터 받은메시지:"+msg);
 						
 						StringTokenizer st = new StringTokenizer(msg, "/");
-						String cate=st.nextToken();
+						String protocol=st.nextToken();
+						String from=st.nextToken();
+						String to=st.nextToken();
 						String info=st.nextToken();
 						
-						if(cate.equals("Chat")){
+						if(protocol.equals("Chat")){
 							client.chat_ta.append(info+"\n");
 								
-						}else if(cate.equals("UserList")){
+						}else if(protocol.equals("UserList")){
 							client.settingUserList(info);
-						}else if(cate.equals("NewList")){ // 새로 접속한 사람있을 때  message
+						}else if(protocol.equals("NewList")){ // 새로 접속한 사람있을 때  message
 							client.settingUserList(info);
+						}else if(protocol.equals("Note")){
+							String note = JOptionPane.showInputDialog(from+" : "+info);
+														 		
+							try {
+								dos.writeUTF("Note/"+to+"/"+from+"/"+note); // 다시보내줄때는 to from 반대로 써줌.
+								
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							
 						}
 					}			
 					
@@ -190,5 +209,4 @@ public class Client_login extends JFrame implements ActionListener{
 		}
 		
 	}
-
 }
