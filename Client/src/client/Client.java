@@ -130,7 +130,8 @@ public class Client extends JFrame implements ActionListener {
 			String msg = jop.showInputDialog(this, selectedList + " 님에게 보낼 내용 ");
 
 			// 답장을 하지않고 취소를 누를때 msg == null
-			if (msg.equals("")) {
+			
+			if (msg == null) {
 				System.out.println("답장안하고 취소버튼 누름");
 			} else {
 				try {

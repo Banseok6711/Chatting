@@ -111,7 +111,7 @@ public class Server extends JFrame implements ActionListener {
 					String info = st.nextToken();
 
 					// 쪽지보내기 
-					if (protocol.equals("Note")) {
+					if (protocol.equals("Note") && !info.equals("null")) {
 						for (int i = 0; i < client_list.size(); i++) {
 							// 접속자 리스트중에서 쪽지대상의 객체일때
 							if (client_list.get(i).nickName.equals(to)) {
