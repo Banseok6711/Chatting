@@ -1,14 +1,6 @@
 package server;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants.Clinit;
-
-import javax.swing.JButton;
-import javax.swing.JTextArea;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,16 +11,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.awt.event.ActionEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Server extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	
+	private static final long serialVersionUID = 7582152797042955560L;
+
 	public static void main(String[] args) {
-		Server server = new Server();
+	 new Server();
 
 	}
-
+	
+	//Socket Resource
+	ServerSocket serverSocket;
+	Socket socket;
+	
 	// JFrame Resource
 	private JTextField port_tf;
 	private JTextField msg_tf;
@@ -56,20 +64,7 @@ public class Server extends JFrame implements ActionListener {
 		
 		room_list.add(room);
 		
-		
-		
-		//1 . 새로 접속하는 User에게 기존 룸 정보를 뿌려주기
-		// 2. 방이 생성될때마다 room List 에 추가 해주기			
-//		for(int i=0 ; i< room_list.size();i++){
-//				try {
-//					user.dos.writeUTF("NewRoom/Server/"+id+"/"+room_list.get(i).getRoomTitle());
-//					
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//		}
-		
-						
+			
 		
 		// 채팅방 개설후 정보 콘솔로 출력해서 확인
 		room.getRoomInfo();
@@ -215,13 +210,13 @@ public class Server extends JFrame implements ActionListener {
 
 				try {
 
-					ServerSocket server = new ServerSocket(portNum);
+					ServerSocket serverSocket = new ServerSocket(portNum);
 					window_ta.append("서버가 준비되었습니다...\n");
-					Socket socket;
+					
 
 					// 클라이언트 연결 요청을 계속 받기 위해서 반복
 					while (true) {
-						socket = server.accept();
+						socket = serverSocket.accept();
 						window_ta.append("client가 연결되었습니다.\n");
 
 						// Client와 통신할 소켓들을 Vector에 저장하기
@@ -325,6 +320,17 @@ public class Server extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == stop_btn) {
 			System.out.println("stop btn");
+			
+			try {
+				socket.close();
+				serverSocket.close();
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
 		}
 
 	}

@@ -1,27 +1,25 @@
 package client;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
-import com.sun.corba.se.spi.orbutil.fsm.Action;
-
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Vector;
-import java.awt.event.ActionEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Client extends JFrame implements ActionListener {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6029410655792941477L;
 
 	static Client_login client_login;
 
@@ -84,8 +82,10 @@ public class Client extends JFrame implements ActionListener {
 		getContentPane().add(user_jl);
 
 		userList = new JList<String>();
-		userList.setBounds(12, 38, 130, 124);
-		getContentPane().add(userList);
+		JScrollPane sp2 = new JScrollPane();
+		sp2.setViewportView(userList);
+		 sp2.setBounds(12, 38, 130, 124);
+		getContentPane().add( sp2);
 
 		msg_tf = new JTextField();
 		msg_tf.setBounds(154, 401, 246, 21);
@@ -96,9 +96,11 @@ public class Client extends JFrame implements ActionListener {
 		lblChattingRoom.setBounds(12, 205, 130, 15);
 		getContentPane().add(lblChattingRoom);
 
-		roomList = new JList();
-		roomList.setBounds(12, 230, 130, 124);
-		getContentPane().add(roomList);
+		roomList = new JList<String>();
+		JScrollPane sp3 = new JScrollPane();
+		sp3.setBounds(12, 230, 130, 124);
+		sp3.setViewportView(roomList);
+		getContentPane().add(sp3);
 
 		join_btn.setBounds(12, 367, 130, 23);
 		getContentPane().add(join_btn);
@@ -139,8 +141,7 @@ public class Client extends JFrame implements ActionListener {
 
 			String selectedList = userList.getSelectedValue().toString();
 
-			JOptionPane jop = new JOptionPane();
-			String msg = jop.showInputDialog(this, selectedList + " 님에게 보낼 내용 ");
+			String msg = JOptionPane.showInputDialog(this, selectedList + " 님에게 보낼 내용 ");
 
 			// 답장을 하지않고 취소를 누를때 msg == null
 			
@@ -162,7 +163,4 @@ public class Client extends JFrame implements ActionListener {
 		}
 
 	}
-
-	
-
 }

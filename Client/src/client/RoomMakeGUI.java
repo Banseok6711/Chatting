@@ -20,6 +20,11 @@ import javax.swing.JButton;
 
  class RoomMakeGUI extends JFrame implements ActionListener{
 	 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static int roomNum=1; 
 	 
 	private JTextField roomTitle_tf;
@@ -49,10 +54,7 @@ import javax.swing.JButton;
 		label_1.setBounds(28, 100, 67, 40);
 		getContentPane().add(label_1);
 		
-		JLabel label_2 = new JLabel("인원수");
-		label_2.setFont(new Font("굴림", Font.PLAIN, 20));
-		label_2.setBounds(28, 162, 67, 40);
-		getContentPane().add(label_2);
+		
 		
 		roomTitle_tf = new JTextField();
 		roomTitle_tf.setBounds(109, 106, 265, 32);
