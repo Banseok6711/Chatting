@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 
 public class Client_login extends JFrame implements ActionListener {
 
-	Client client;
+	public Client client;
 
 	// GUI Resource
 	private JTextField ip_tf;
@@ -132,9 +132,8 @@ public class Client_login extends JFrame implements ActionListener {
 
 					dos.writeUTF(id);
 
-					// //접속자 리스트에 자기자신 먼저 추가(1명)
-					// client.settingUserList(id);
-
+					client.user_jl.setText("User :"+ id);
+					
 					// 이미 기존에 접속한 리스트를 추가
 
 					// 데이터 받을때 (일단 client는 보내는것만 처리 후에 나중에 하기)
@@ -151,27 +150,34 @@ public class Client_login extends JFrame implements ActionListener {
 						String from = st.nextToken();
 						String to = st.nextToken();
 						String info = st.nextToken();
+						
+					
 
 						if (protocol.equals("Chat")) {
 							client.chat_ta.append(info + "\n");
 
-						} else if (protocol.equals("UserList")) {
+						} else if (protocol.equals("UserList")) {// 자신을 표시하게 List에 [나] 라고 표시하기 
+							
 							client.settingUserList(info);
+							
 						} else if (protocol.equals("NewList")) { // 새로 접속한 사람있을
 																	// 때 message
 							client.settingUserList(info);
 						} else if (protocol.equals("Note")) {
 							try {
 								String note = JOptionPane.showInputDialog(from + " : " + info);
-								dos.writeUTF("Note/" + to + "/" + from + "/" + note); // 다시보내줄때는
-																						// to
-																						// from
-																						// 반대로
-																						// 써줌.
-
+								dos.writeUTF("Note/" + to + "/" + from + "/" + note); 																							
 							} catch (IOException e1) {
 								e1.printStackTrace();
-							}
+							}															
+							
+						}else if(protocol.equals("NewRoom") || protocol.equals("OldRoom")){		
+							
+							StringTokenizer st2= new StringTokenizer(info, ",");
+							String title = st2.nextToken();
+							String num = st2.nextToken();
+							
+							client.settingRoomList(to,title,num); // to : roomMaker , info: roomTitle
 						}
 
 					}
@@ -193,11 +199,15 @@ public class Client_login extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		if (e.getSource() == connect_btn) {
 			System.out.println("connect btn ");
+			
+			this.dispose();
 
 			String ip = ip_tf.getText();
 			int port = Integer.parseInt(port_tf.getText());
 
 			openSocket(ip, port);
+			
+			
 
 		}
 

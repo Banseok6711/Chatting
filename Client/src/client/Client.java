@@ -33,17 +33,29 @@ public class Client extends JFrame implements ActionListener {
 	}
 
 	public void settingUserList(String id) {
-		System.out.println("settingUserList 실행");
+		System.out.println("settingUserList 실행");	
+		
+		list_user.add(id);	
 
-		list_vector.add(id);
-
-		userList.setListData(list_vector);
+		userList.setListData(list_user);
+	}
+	
+	//
+	public void settingRoomList(String to, String title, String num) {
+		
+		
+		list_room.add(title);
+		
+		roomList.setListData(list_room);
+		
+		
 	}
 
 	private JTextField msg_tf;
 
-	JList userList;
-	JList roomList;
+	JList<String> userList;
+	JList<String> roomList;
+	JLabel user_jl = new JLabel("User");
 
 	JTextArea chat_ta = new JTextArea();
 	JButton shortMsg_btn = new JButton("ShortMsg");
@@ -51,7 +63,8 @@ public class Client extends JFrame implements ActionListener {
 	JButton create_btn = new JButton("Create Room");
 	JButton send_btn = new JButton("send");
 
-	Vector list_vector = new Vector();
+	Vector<String> list_user = new Vector<String>();
+	Vector<String> list_room = new Vector<String>();
 
 	public Client() {
 		setTitle("Client");
@@ -66,11 +79,11 @@ public class Client extends JFrame implements ActionListener {
 		shortMsg_btn.setBounds(12, 172, 130, 23);
 		getContentPane().add(shortMsg_btn);
 
-		JLabel lblNewLabel = new JLabel("User");
-		lblNewLabel.setBounds(12, 14, 130, 15);
-		getContentPane().add(lblNewLabel);
+		
+		user_jl.setBounds(12, 14, 130, 15);
+		getContentPane().add(user_jl);
 
-		userList = new JList<JLabel>();
+		userList = new JList<String>();
 		userList.setBounds(12, 38, 130, 124);
 		getContentPane().add(userList);
 
@@ -149,5 +162,7 @@ public class Client extends JFrame implements ActionListener {
 		}
 
 	}
+
+	
 
 }

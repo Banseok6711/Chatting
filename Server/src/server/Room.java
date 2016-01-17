@@ -5,21 +5,25 @@ import java.util.Vector;
 public class Room {
 	
 	Vector<String> userId_list =new Vector<String>();
-	private int maxNumOfMembers;
 	private String roomTitle;
 	private int roomNumber; // 방번호
+	private String maker ;//room Maker
 	
-	public Room(String title , int maxNum, int roomNum){
+	public String getMaker() {
+		return maker;
+	}
+
+	public void setMaker(String maker) {
+		this.maker = maker;
+	}
+
+	public Room(String title , int roomNum){
 		roomTitle = title;
-		maxNumOfMembers = maxNum;
 		roomNumber = roomNum;
 				
 	}
 
-	public int getMaxNumOfMembers() {
-		return maxNumOfMembers;
-	}
-
+	
 	public String getRoomTitle() {
 		return roomTitle;
 	}

@@ -19,20 +19,21 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 
  class RoomMakeGUI extends JFrame implements ActionListener{
+	 
+	private static int roomNum=1; 
+	 
 	private JTextField roomTitle_tf;
 	
 	Vector<Integer> numbers =new Vector<Integer>();
 	
-	JComboBox<Integer> number_cb = new JComboBox<Integer>(numbers);
 	JButton create_btn = new JButton("생성");
 	JButton cancel_btn = new JButton("취소");
 	
-	Client_login client;
-	
+	Client_login client_login;
 	
 	RoomMakeGUI(Client_login c){
 		
-		client = c;
+		client_login = c;
 		
 		getContentPane().setLayout(null);
 		
@@ -57,12 +58,7 @@ import javax.swing.JButton;
 		roomTitle_tf.setBounds(109, 106, 265, 32);
 		getContentPane().add(roomTitle_tf);
 		roomTitle_tf.setColumns(10);
-		
-		
-		number_cb.setBounds(109, 169, 103, 30);
-		getContentPane().add(number_cb);
-		
-		
+				
 		create_btn.setBounds(54, 289, 105, 27);
 		getContentPane().add(create_btn);
 		
@@ -100,13 +96,19 @@ import javax.swing.JButton;
 		if(e.getSource() == create_btn){
 			
 			String title = roomTitle_tf.getText();
-			int num = numbers.get(number_cb.getSelectedIndex());
-			
-			String info = title+","+num;
+						
+			String info = title+","+roomNum;
 			
 			try {
-				client.dos.writeUTF("Create/"+client.id+"/Server/"+info);
+				
+				
+//				client_login.client.list_room.removeAllElements(); // room List 들을 다시 다 지우고 밑에서 다시 추가
+				
+				 
+				
+				client_login.dos.writeUTF("NewRoom/"+client_login.id+"/Server/"+info);
 //				this.dispose(); 
+				roomNum++;
 				
 			} catch (IOException e1) {
 				e1.printStackTrace();
