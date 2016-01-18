@@ -42,7 +42,7 @@ public class Client extends JFrame implements ActionListener {
 	public void settingRoomList(String to, String title, String num) {
 		
 		
-		list_room.add(title);
+		list_room.add(num+"]번방:"+title);
 		
 		roomList.setListData(list_room);
 		

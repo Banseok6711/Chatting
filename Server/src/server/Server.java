@@ -56,11 +56,11 @@ public class Server extends JFrame implements ActionListener {
 	int increaseRoomNum=1;
 	
 	//채팅방 하나를 개설 
-	public void makeRoom(String title , String roomNum , String id ){
+	public void makeRoom(int roomNum , String title ,  String from ){
 		
-		Room room = new Room(title , Integer.parseInt(roomNum));
+		Room room = new Room(roomNum ,title , from);
 		
-		room.addUser(id);
+		room.addUser(from);
 		
 		room_list.add(room);
 		
@@ -144,22 +144,13 @@ public class Server extends JFrame implements ActionListener {
 						//방이 생성됬다는 걸 알림
 						JOptionPane.showMessageDialog(null, "방이 생성되었습니다!");
 						
-						// info에 title, 인원수 정보가 두가지로 받아서 ( ,로 구분하여서 분석하기) 
-						StringTokenizer stk =new StringTokenizer(info, ",");
-						String title =stk.nextToken();
-						String roomNum = stk.nextToken();
-						
-						makeRoom(title, roomNum, from); // make newRoom
+						makeRoom(increaseRoomNum, info,from);
 						
 						for(int i=0;i< client_list.size();i++){
-							client_list.get(i).dos.writeUTF("NewRoom/Server/client/"+title+","+roomNum);
+							client_list.get(i).dos.writeUTF("NewRoom/Server/client/"+info+","+increaseRoomNum);
 						}
 						
-						
-						
-//						System.out.println("서버 :방생성"+title+","+maxMember+" from:"+from);
-						
-						
+						increaseRoomNum++;
 					}
 
 				} catch (IOException e) {

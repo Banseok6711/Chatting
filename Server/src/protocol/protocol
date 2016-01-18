@@ -2,4 +2,5 @@ Chat/(from)/(to)(message) : 채팅창에서의 대화
 UserList/(from)/(to)/(message) : already added user list  
 NewList/(from)/(to)/(message): add new user list
 Note/(userid)/(note) : 쪽지보내기
-RoomList
+NewRoom/(from)/(to)/(message): 
+OldRoom/(from)/(to)/(message): 

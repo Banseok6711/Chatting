@@ -25,7 +25,7 @@ import javax.swing.JButton;
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static int roomNum=1; 
+//	private static int roomNum=1; 
 	 
 	private JTextField roomTitle_tf;
 	
@@ -99,18 +99,11 @@ import javax.swing.JButton;
 			
 			String title = roomTitle_tf.getText();
 						
-			String info = title+","+roomNum;
+			String info = title;
 			
 			try {
 				
-				
-//				client_login.client.list_room.removeAllElements(); // room List 들을 다시 다 지우고 밑에서 다시 추가
-				
-				 
-				
 				client_login.dos.writeUTF("NewRoom/"+client_login.id+"/Server/"+info);
-//				this.dispose(); 
-				roomNum++;
 				
 			} catch (IOException e1) {
 				e1.printStackTrace();

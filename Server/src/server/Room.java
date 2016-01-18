@@ -17,9 +17,10 @@ public class Room {
 		this.maker = maker;
 	}
 
-	public Room(String title , int roomNum){
-		roomTitle = title;
+	public Room(int roomNum , String title , String from){
 		roomNumber = roomNum;
+		roomTitle = title;
+		maker = from;
 				
 	}
 
