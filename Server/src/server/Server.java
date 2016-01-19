@@ -144,7 +144,7 @@ public class Server extends JFrame implements ActionListener {
 						//1. 서버에는 몇번방,누구로부터,누구에게 어떤 메시지 전송했는지 보여주기 .
 						//2. 같은 Room에 있는 User들에게 메시지 다보내기 
 						
-						chatting(joinedRoomNum);					
+						chatting(from ,joinedRoomNum, info);					
 						
 					}
 					//방 생성
@@ -184,7 +184,13 @@ public class Server extends JFrame implements ActionListener {
 								}
 								
 								room.userId_list.add(from); // 해당방에 user 추가
-								user.joinedRoomNum = roomNum;
+								
+								//현재 유저 방번호를 지정해준다 
+								for(int i=0;i<client_list.size();i++){
+									if(client_list.get(i).nickName.equals(from)){
+										client_list.get(i).joinedRoomNum = roomNum;
+									}
+								}
 								
 								//로그출력
 								room.getRoomInfo();
@@ -213,7 +219,27 @@ public class Server extends JFrame implements ActionListener {
 
 
 	// 채팅방 참여하기 구현 후에 구현하기
-	public void chatting(int joinedRoomNum) {
+	public void chatting(String from ,int joinedRoomNum , String info) {
+		// 접속자중에 같은 방번호 인 user에게 채팅 내용 보내기
+		
+		//디버깅 
+		/*System.out.println("method name: chatting)");
+		System.out.println("user.joinedRoomNum:"+user.joinedRoomNum);
+		System.out.println("user.nickname"+user.nickName);
+		System.out.println("from:"+from);
+		System.out.println("info:"+info);
+		*/
+		try{
+			for(int i=0;i<client_list.size();i++){
+				if(client_list.get(i).joinedRoomNum == joinedRoomNum ){					
+					client_list.get(i).dos.writeUTF("Chat/"+from+"/Client/"+info);
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		
 	}
 

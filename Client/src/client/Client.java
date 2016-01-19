@@ -172,7 +172,11 @@ public class Client extends JFrame implements ActionListener {
 		} else if (e.getSource() == send_btn) {
 			System.out.println("send btn");
 
-			client_login.sendMsg("Chat/" + "Server/" + msg_tf.getText());
+			try {
+				client_login.dos.writeUTF("Chat/"+client_login.id+"/Server/" + msg_tf.getText());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 	}

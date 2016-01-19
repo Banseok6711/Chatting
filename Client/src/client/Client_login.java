@@ -42,17 +42,17 @@ public class Client_login extends JFrame implements ActionListener {
 	// Socket Resource
 	DataOutputStream dos;
 	DataInputStream dis;
-
-	public void sendMsg(String msg) {
-		try {
-
-			dos.writeUTF("Chat/" + id_tf + "/Server/" + msg);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//
+//	public void sendMsg(String msg) {
+//		try {
+//
+//			dos.writeUTF("Chat/" + id_tf + "/Server/" + msg);
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public Client_login(Client c) {
 		client = c;
@@ -154,7 +154,7 @@ public class Client_login extends JFrame implements ActionListener {
 					
 
 						if (protocol.equals("Chat")) {
-							client.chat_ta.append(info + "\n");
+							client.chat_ta.append(from+" :"+ info + "\n");
 
 						} else if (protocol.equals("UserList")) {// 자신을 표시하게 List에 [나] 라고 표시하기 
 							
