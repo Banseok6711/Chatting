@@ -178,6 +178,9 @@ public class Client_login extends JFrame implements ActionListener {
 							String num = st2.nextToken();
 							
 							client.settingRoomList(to,title,num); // to : roomMaker , info: roomTitle
+						}else if(protocol.equals("Join")){
+							//info 새로 Join한 user의 이름
+							client.chat_ta.append("[참가]"+info+" 님이 대화방에 참여하였습니다. \n");
 						}
 
 					}

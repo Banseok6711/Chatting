@@ -135,6 +135,19 @@ public class Client extends JFrame implements ActionListener {
 			new RoomMakeGUI(client_login);
 
 		} else if (e.getSource() == join_btn) {
+			
+			System.out.println("방에 참여하기");
+			
+			int selectedRoomNum = roomList.getSelectedIndex()+1;
+			
+			try {
+				client_login.dos.writeUTF("Join/"+client_login.id+"/Server/"+selectedRoomNum);
+				
+				
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
 
 		} else if (e.getSource() == shortMsg_btn) {
 			System.out.println("쪽지 보내기");

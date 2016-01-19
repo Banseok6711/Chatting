@@ -4,3 +4,6 @@ NewList/(from)/(to)/(message): add new user list
 Note/(userid)/(note) : 쪽지보내기
 NewRoom/(from)/(to)/(message): 
 OldRoom/(from)/(to)/(message): 
+
+Join /Server/Client/ (새로들어온참가자): server -> client
+Join/"+client_login.id+"/Server/"+selectedRoomNum): client -> sever  

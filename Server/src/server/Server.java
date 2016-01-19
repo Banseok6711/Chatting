@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -80,6 +81,7 @@ public class Server extends JFrame implements ActionListener {
 
 		Socket socket;
 		String nickName;
+		int joinedRoomNum=0; // join되지 않았을때 0으로 초기화
 				
 
 		UserInfo(Socket s) {
@@ -135,22 +137,64 @@ public class Server extends JFrame implements ActionListener {
 					}
 					//채팅 
 					else if(protocol.equals("Chat")) {
-						window_ta.append(nickName + ":" + info);
+						
+						//서버에 채팅 내용 뿌려주기 
+//						window_ta.append(nickName + ":" + info);
+						
+						//1. 서버에는 몇번방,누구로부터,누구에게 어떤 메시지 전송했는지 보여주기 .
+						//2. 같은 Room에 있는 User들에게 메시지 다보내기 
+						
+						chatting(joinedRoomNum);					
+						
 					}
 					//방 생성
 					else if(protocol.equals("NewRoom")){
 						
 						System.out.println("Server: NewRoom Protocol 받음");
-						//방이 생성됬다는 걸 알림
-						JOptionPane.showMessageDialog(null, "방이 생성되었습니다!");
+						
 						
 						makeRoom(increaseRoomNum, info,from);
+						
+						window_ta.append("[방생성]"+from+" 님이 \""+info+"\""+ "방을 만드셨습니다.\n");
+						
+						joinedRoomNum = increaseRoomNum;
 						
 						for(int i=0;i< client_list.size();i++){
 							client_list.get(i).dos.writeUTF("NewRoom/Server/client/"+info+","+increaseRoomNum);
 						}
 						
 						increaseRoomNum++;
+					}
+					else if(protocol.equals("Join")){ // 방에 참여하기 버튼 눌럿을때 
+						//from: 해당참여자  info: 참여하려는 방번호
+						
+						int roomNum = Integer.parseInt(info);
+						
+						Iterator it= room_list.iterator();
+						
+						while(it.hasNext()){
+							Room room = (Room)it.next();
+							if(room.getRoomNumber() == roomNum){
+								
+								//같은 방 멤버들에게 접속을 알리는 메시지 보내기 
+								for(int i=0; i<client_list.size();i++){
+									 if(client_list.get(i).joinedRoomNum == roomNum ){
+										 client_list.get(i).dos.writeUTF("Join/Server/client/"+from);
+									 }
+								}
+								
+								room.userId_list.add(from); // 해당방에 user 추가
+								user.joinedRoomNum = roomNum;
+								
+								//로그출력
+								room.getRoomInfo();
+								
+								break;
+							}							
+						}
+						
+						window_ta.append("[대화방참여]"+from+":"+roomNum+"번방에 참여하였습니다.\n");
+						
 					}
 
 				} catch (IOException e) {
@@ -167,7 +211,11 @@ public class Server extends JFrame implements ActionListener {
 
 	}
 
-	// 메시지전송
+
+	// 채팅방 참여하기 구현 후에 구현하기
+	public void chatting(int joinedRoomNum) {
+		
+	}
 
 	public void sendMsg() {
 		try {

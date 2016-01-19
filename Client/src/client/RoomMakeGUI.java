@@ -3,6 +3,8 @@ package client;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -104,6 +106,11 @@ import javax.swing.JButton;
 			try {
 				
 				client_login.dos.writeUTF("NewRoom/"+client_login.id+"/Server/"+info);
+				
+				//방이 생성됬다는 걸 알림
+				JOptionPane.showMessageDialog(null, "방이 생성되었습니다!");
+				
+				dispose();
 				
 			} catch (IOException e1) {
 				e1.printStackTrace();
